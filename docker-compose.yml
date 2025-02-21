@@ -1,0 +1,11 @@
+services:
+  backend:
+    build: ./backend
+    container_name: careerai-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=careerai.settings
+    command: ["poetry", "run", "python", "careerai/manage.py", "runserver", "0.0.0.0:8000"]
