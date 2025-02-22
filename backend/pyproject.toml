@@ -10,6 +10,7 @@ python = "^3.10"
 django = "^5.1.6"
 pymongo = "^4.11.1"
 python-dotenv = "^1.0.1"
+drf-yasg = "^1.21.8"
 
 
 [build-system]
