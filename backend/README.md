@@ -38,6 +38,8 @@ docker-compose build
 docker-compose up -d
 ```
 Your backend should now be running at: **http://localhost:8000/**
+For API testing, you can open Swagger UI: **http://localhost:8000/docs**
+
 
 To stop the containers, press **Ctrl + C** or run:
 ```sh
