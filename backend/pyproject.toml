@@ -11,6 +11,7 @@ django = "^5.1.6"
 pymongo = "^4.11.1"
 python-dotenv = "^1.0.1"
 drf-yasg = "^1.21.8"
+mongoengine = "^0.29.1"
 
 
 [build-system]
