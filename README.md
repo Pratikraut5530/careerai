@@ -3,7 +3,6 @@
 ## Prerequisites
 Make sure you have the following installed on your system:
 - Python^3.10
-- Poetry
 - Django
 - Docker Desktop
 
@@ -17,23 +16,18 @@ git clone https://github.com/your-repo/CareerAI.git
 cd CareerAI/backend
 ```
 
-### 2️⃣ Install Poetry for Package Management
+### 2️⃣ Create a Virtual Environment & Install Dependencies
 ```sh
-pip install poetry
+pip install -r requirements.txt
 ```
 
-### 3️⃣ Create a Virtual Environment & Install Dependencies
-```sh
-poetry install
-```
-
-### 4️⃣ Build Docker Containers
+### 3️⃣ Build Docker Containers
 Navigate to the root project folder:
 ```sh
 docker-compose build
 ```
 
-### 5️⃣ Run Containers
+### 4️⃣ Run Containers
 ```sh
 docker-compose up -d
 ```
