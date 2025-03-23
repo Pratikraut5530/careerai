@@ -6,7 +6,7 @@ authors = [
     {name = "Sejal Parate",email = "sejbp3003@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "djangorestframework (>=3.15.2,<4.0.0)",
     "mongoengine (>=0.29.1,<0.30.0)",
