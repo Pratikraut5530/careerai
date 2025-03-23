@@ -1,21 +1,24 @@
 services:
   web:
     build: .
-    container_name: careerai_app
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    container_name: careerai_web
+    command: poetry run python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
-    working_dir: /app/careerai
     ports:
       - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MONGO_URI=mongodb://db:27017/
+      - MONGO_DB_NAME=careerai-db
+      - DOCKER_ENV=true
     depends_on:
       - db
-    env_file:
-      - .env
 
   db:
-    image: mongo:6.0
-    container_name: careerai_mongo
+    image: mongo:latest
+    container_name: careerai_db
+    restart: always
     ports:
       - "27017:27017"
     volumes:
