@@ -12,24 +12,24 @@ Make sure you have the following installed on your system:
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/your-repo/CareerAI.git
+git clone https://github.com/Sejalparate/careerai
 cd CareerAI/backend
 ```
 
-### 2️⃣ Create a Virtual Environment & Install Dependencies
+### 2️⃣ Install poetry for managing dependencies
 ```sh
-pip install -r requirements.txt
+pip install poetry
 ```
 
 ### 3️⃣ Build Docker Containers
 Navigate to the root project folder:
 ```sh
-docker-compose build
+docker compose build
 ```
 
 ### 4️⃣ Run Containers
 ```sh
-docker-compose up -d
+docker compose up -d
 ```
 Your backend should now be running at: **http://localhost:8000/**
 For API testing, you can open Swagger UI: **http://localhost:8000/docs**
@@ -37,7 +37,7 @@ For API testing, you can open Swagger UI: **http://localhost:8000/docs**
 
 To stop the containers, press **Ctrl + C** or run:
 ```sh
-docker-compose down
+docker compose down
 ```
 
 ---
