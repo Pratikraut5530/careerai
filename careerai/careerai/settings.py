@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'course',
-    'user_registration',
+    # 'user_registration',
 ]
 
 MIDDLEWARE = [
@@ -88,7 +88,7 @@ except Exception as e:
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
-    'user_registration.auth.MongoEngineBackend',  # Custom MongoEngine backend
+    # 'user_registration.auth.MongoEngineBackend',  # Custom MongoEngine backend
     'django.contrib.auth.backends.ModelBackend',  # Keep as fallback
 ]
 
@@ -103,7 +103,7 @@ DATABASES = {
 # JWT Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'user_registration.jwt.MongoJWTAuthentication',
+        # 'user_registration.jwt.MongoJWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -129,7 +129,7 @@ SIMPLE_JWT = {
 }
 
 # Custom user model settings
-AUTH_USER_MODEL = None  # Disable Django's built-in user model
+AUTH_USER_MODEL = 'auth.User'  # Disable Django's built-in user model
 
 
 # Password validation
@@ -152,7 +152,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'user_registration.auth.MongoEngineAuthentication',
+        # 'user_registration.auth.MongoEngineAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
