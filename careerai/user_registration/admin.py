@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import (
-    User, UserProfile, Skill, Industry, EducationLevel,
-    PreferredEmploymentType, DesiredWorkEnvironment, JobRole
+    User, UserProfile, Skill, Company, Location, EducationLevel,
+    EmploymentType, DesiredWorkEnvironment, JobRole
 )
 
 class CustomUserAdmin(UserAdmin):
@@ -27,30 +27,42 @@ class CustomUserAdmin(UserAdmin):
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'location', 'employment_status', 'is_actively_job_searching')
-    search_fields = ('user__email', 'user__username', 'location')
+    list_display = ('user', 'location', 'employment_status', 'preferred_employment_type', 'is_actively_job_searching')
+    search_fields = ('user__email', 'user__username', 'location__name')
     list_filter = ('employment_status', 'is_actively_job_searching')
 
 
 class SkillAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category')
-    list_filter = ('category',)
+    list_display = ('name',)
     search_fields = ('name',)
 
 
-class IndustryAdmin(admin.ModelAdmin):
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ('name',)
     search_fields = ('name',)
 
 
 class EducationLevelAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+
+class EmploymentTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
     search_fields = ('name',)
 
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Skill, SkillAdmin)
-admin.site.register(Industry, IndustryAdmin)
+admin.site.register(Company, CompanyAdmin)
+admin.site.register(Location, LocationAdmin)
 admin.site.register(EducationLevel, EducationLevelAdmin)
-admin.site.register(PreferredEmploymentType)
+admin.site.register(EmploymentType, EmploymentTypeAdmin)
 admin.site.register(DesiredWorkEnvironment)
 admin.site.register(JobRole)
