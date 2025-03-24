@@ -81,7 +81,7 @@ class UserProfile(models.Model):
         ('on_site', 'On-site'),
     )
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', unique=True)
     location = models.CharField(max_length=100, blank=True, null=True)
     
     # Career preferences
@@ -144,7 +144,11 @@ class UserProfile(models.Model):
         return f"{self.user.email}'s Profile"
     
     def save(self, *args, **kwargs):
-        if not self.pk:  # First save
+        # Check if another profile exists for this user
+        if not self.pk and UserProfile.objects.filter(user=self.user).exists():
+            raise ValueError("A profile already exists for this user")
+        
+        if not self.pk:
             user = self.user
             user.is_profile_completed = True
             user.save()
