@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    container_name: careerai_web
+    container_name: careerai
     command: poetry run python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
@@ -9,20 +9,11 @@ services:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
-      - MONGO_URI=mongodb://db:27017/
-      - MONGO_DB_NAME=careerai-db
-      - DOCKER_ENV=true
-    depends_on:
-      - db
-
-  db:
-    image: mongo:latest
-    container_name: careerai_db
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
-volumes:
-  mongo_data:
+      - DEBUG=True
+      - SECRET_KEY=your_development_secret_key
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/careerai/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

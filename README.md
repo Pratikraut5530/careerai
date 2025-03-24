@@ -32,12 +32,21 @@ docker compose build
 docker compose up -d
 ```
 Your backend should now be running at: **http://localhost:8000/**
-For API testing, you can open Swagger UI: **http://localhost:8000/docs**
-
 
 To stop the containers, press **Ctrl + C** or run:
 ```sh
 docker compose down
 ```
+
+### 5️⃣ Django setup
+
+```sh
+cd careerai
+python manage.py createsuperuser    # Create superuser here
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver     # Run this command if running locally, no need to run it if docker container is running
+```
+For Admin panel: **http://localhost:8000/admin/**
 
 ---
