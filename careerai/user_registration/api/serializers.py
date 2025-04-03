@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from user_registration.models import (
-    User, UserProfile, Skill, Industry, EducationLevel,
-    PreferredEmploymentType, DesiredWorkEnvironment, JobRole
+    User, UserProfile, Skill, Company, Location, EducationLevel,
+    EmploymentType, DesiredWorkEnvironment, JobRole
 )
 
 
@@ -23,12 +23,18 @@ class UserSerializer(serializers.ModelSerializer):
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
-        fields = ('id', 'name', 'category')
+        fields = ('id', 'name')
 
 
-class IndustrySerializer(serializers.ModelSerializer):
+class CompanySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Industry
+        model = Company
+        fields = ('id', 'name')
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
         fields = ('id', 'name')
 
 
@@ -38,9 +44,9 @@ class EducationLevelSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class PreferredEmploymentTypeSerializer(serializers.ModelSerializer):
+class EmploymentTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PreferredEmploymentType
+        model = EmploymentType
         fields = ('id', 'name')
 
 
@@ -58,6 +64,13 @@ class JobRoleSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     # IDs for relations
+    location_id = serializers.PrimaryKeyRelatedField(
+        queryset=Location.objects.all(),
+        source='location',
+        required=False,
+        allow_null=True
+    )
+    
     education_level_id = serializers.PrimaryKeyRelatedField(
         queryset=EducationLevel.objects.all(),
         source='education_level',
@@ -65,10 +78,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
         allow_null=True
     )
     
-    preferred_employment_types = serializers.PrimaryKeyRelatedField(
-        queryset=PreferredEmploymentType.objects.all(),
-        many=True,
-        required=False
+    preferred_employment_type_id = serializers.PrimaryKeyRelatedField(
+        queryset=EmploymentType.objects.all(),
+        source='preferred_employment_type',
+        required=False,
+        allow_null=True
     )
     
     desired_work_environments = serializers.PrimaryKeyRelatedField(
@@ -77,8 +91,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         required=False
     )
     
-    industries_of_interest = serializers.PrimaryKeyRelatedField(
-        queryset=Industry.objects.all(),
+    companies_of_interest = serializers.PrimaryKeyRelatedField(
+        queryset=Company.objects.all(),
         many=True,
         required=False
     )
@@ -98,9 +112,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = (
-            'id', 'user', 'location', 'employment_status', 'education_level_id',
-            'preferred_employment_types', 'desired_work_environments',
-            'years_of_experience', 'industries_of_interest', 'job_roles_of_interest',
+            'id', 'user', 'location_id', 'employment_status', 'preferred_employment_type_id',
+            'education_level_id', 'desired_work_environments',
+            'years_of_experience', 'companies_of_interest', 'job_roles_of_interest',
             'skills', 'career_vision', 'portfolio_url', 'is_actively_job_searching',
             'created_at', 'updated_at'
         )
@@ -109,20 +123,20 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserProfileDetailSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+    location = LocationSerializer(read_only=True)
     education_level = EducationLevelSerializer(read_only=True)
-    preferred_employment_types = PreferredEmploymentTypeSerializer(many=True, read_only=True)
+    preferred_employment_type = EmploymentTypeSerializer(read_only=True)
     desired_work_environments = DesiredWorkEnvironmentSerializer(many=True, read_only=True)
-    industries_of_interest = IndustrySerializer(many=True, read_only=True)
+    companies_of_interest = CompanySerializer(many=True, read_only=True)
     job_roles_of_interest = JobRoleSerializer(many=True, read_only=True)
     skills = SkillSerializer(many=True, read_only=True)
     
     class Meta:
         model = UserProfile
         fields = (
-            'id', 'user', 'location', 'employment_status',
-            'preferred_employment_types', 'desired_work_environments',
-            'education_level', 'years_of_experience',
-            'industries_of_interest', 'job_roles_of_interest',
-            'skills', 'career_vision', 'portfolio_url',
-            'is_actively_job_searching', 'created_at', 'updated_at'
+            'id', 'user', 'location', 'employment_status', 'preferred_employment_type',
+            'desired_work_environments', 'education_level', 'years_of_experience',
+            'companies_of_interest', 'job_roles_of_interest', 'skills', 
+            'career_vision', 'portfolio_url', 'is_actively_job_searching',
+            'created_at', 'updated_at'
         )
