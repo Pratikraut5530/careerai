@@ -71,7 +71,7 @@ DATABASES = {
 }
 
 # Custom user model settings
-AUTH_USER_MODEL = 'user_registration.User'
+AUTH_USER_MODEL = 'auth.User'
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
