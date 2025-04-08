@@ -1,0 +1,282 @@
+.alumni-directory-page,
+.mentor-search-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--gray-900);
+}
+
+.page-header p {
+  color: var(--gray-600);
+  font-size: 1rem;
+}
+
+.alumni-content,
+.mentor-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 992px) {
+  .alumni-content,
+  .mentor-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.filters-sidebar {
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  height: fit-content;
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.filter-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--gray-800);
+}
+
+.search-input,
+.filter-select,
+.filter-input {
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-input:focus,
+.filter-select:focus,
+.filter-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+}
+
+.skills-filter,
+.special-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skill-checkbox,
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.skill-checkbox input,
+.filter-checkbox input {
+  margin-right: 0.5rem;
+}
+
+.reset-filters-btn {
+  width: 100%;
+  padding: 0.625rem;
+  background-color: var(--gray-200);
+  color: var(--gray-700);
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.reset-filters-btn:hover {
+  background-color: var(--gray-300);
+}
+
+.alumni-list-container,
+.mentors-list-container {
+  width: 100%;
+}
+
+.results-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.results-info p {
+  color: var(--gray-600);
+  font-size: 0.875rem;
+}
+
+.view-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.view-mentors-link,
+.view-events-link,
+.view-all-alumni-link {
+  font-size: 0.875rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+}
+
+.view-mentors-link i,
+.view-events-link i,
+.view-all-alumni-link i {
+  margin-right: 0.375rem;
+}
+
+.no-results {
+  background-color: var(--gray-100);
+  padding: 2rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  color: var(--gray-600);
+}
+
+.no-results p {
+  margin-bottom: 1rem;
+}
+
+.alumni-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.mentors-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.mentor-card {
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mentor-details {
+  border-top: 1px solid var(--gray-200);
+  padding-top: 1rem;
+}
+
+.mentor-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 1rem;
+}
+
+.mentor-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-badge.available {
+  background-color: #e6f7ec;
+  color: #2e7d32;
+}
+
+.status-badge.unavailable {
+  background-color: #feeaea;
+  color: #c62828;
+}
+
+.mentor-expertise h4,
+.mentorship-style h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--gray-800);
+}
+
+.mentorship-style p {
+  font-size: 0.875rem;
+  color: var(--gray-700);
+  line-height: 1.5;
+}
+
+.expertise-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.expertise-tag {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.btn-request-mentorship {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  text-align: center;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-request-mentorship:hover {
+  background-color: var(--primary-hover);
+  color: white;
+}

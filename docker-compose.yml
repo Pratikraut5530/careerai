@@ -12,8 +12,24 @@ services:
       - DEBUG=True
       - SECRET_KEY=your_development_secret_key
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/careerai/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/admin/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
+  
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: careerai-frontend
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://web:8000
+    depends_on:
+      - web
