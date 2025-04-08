@@ -1,0 +1,2 @@
+INFO 2025-04-08 14:26:27,621 autoreload Watching for file changes with StatReloader
+INFO 2025-04-08 14:26:39,200 autoreload /app/careerai/careerai/settings.py changed, reloading.

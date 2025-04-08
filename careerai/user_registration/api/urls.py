@@ -1,24 +1,21 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView
-from user_registration.api.views import (
-    UserViewSet, UserProfileViewSet, SkillViewSet,
-    CompanyViewSet, LocationViewSet, EducationLevelViewSet,
-    EmploymentTypeViewSet, DesiredWorkEnvironmentViewSet, JobRoleViewSet
-)
+from . import views
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'profiles', UserProfileViewSet)
-router.register(r'skills', SkillViewSet)
-router.register(r'companies', CompanyViewSet)
-router.register(r'locations', LocationViewSet)
-router.register(r'education-levels', EducationLevelViewSet)
-router.register(r'employment-types', EmploymentTypeViewSet)
-router.register(r'work-environments', DesiredWorkEnvironmentViewSet)
-router.register(r'job-roles', JobRoleViewSet)
+router.register(r'profile', views.UserProfileViewSet, basename='user-profile')
+router.register(r'skills', views.SkillViewSet, basename='skill')
+router.register(r'companies', views.CompanyViewSet, basename='company')
+router.register(r'locations', views.LocationViewSet, basename='location')
+router.register(r'education-levels', views.EducationLevelViewSet, basename='education-level')
+router.register(r'employment-types', views.EmploymentTypeViewSet, basename='employment-type')
+router.register(r'work-environments', views.DesiredWorkEnvironmentViewSet, basename='work-environment')
+router.register(r'job-roles', views.JobRoleViewSet, basename='job-role')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('register/', views.UserRegistrationView.as_view(), name='register'),
+    path('login/', views.UserLoginView.as_view(), name='login'),
+    path('logout/', views.UserLogoutView.as_view(), name='logout'),
+    path('me/', views.CurrentUserView.as_view(), name='current-user'),
 ]

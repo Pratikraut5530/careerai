@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
-class UserRegistrationConfig(AppConfig):
+class JobSearchConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'user_registration'
+    name = 'job_search'

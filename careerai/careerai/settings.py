@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+from datetime import timedelta
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,19 +28,29 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
+    'django_filters',
+    # Project apps
+    'user_registration',
     'course',
-    # 'user_registration',
+    'job_search',
+    'learning',
+    'alumni',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True  # Only for development, restrict in production
 
 ROOT_URLCONF = 'careerai.urls'
 
@@ -71,7 +83,7 @@ DATABASES = {
 }
 
 # Custom user model settings
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'user_registration.User'  # Corrected to use the custom User model
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
@@ -106,10 +118,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
 }
 
 # JWT token settings
-from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -153,8 +169,71 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email settings (for development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# API Keys and Credentials
+INDEED_PUBLISHER_ID = os.environ.get('INDEED_PUBLISHER_ID', '')
+LINKEDIN_API_KEY = os.environ.get('LINKEDIN_API_KEY', '')
+UDEMY_CLIENT_ID = os.environ.get('UDEMY_CLIENT_ID', '')
+UDEMY_CLIENT_SECRET = os.environ.get('UDEMY_CLIENT_SECRET', '')
+COURSERA_API_KEY = os.environ.get('COURSERA_API_KEY', '')
+
+# API integration settings
+USE_REAL_JOB_APIS = os.environ.get('USE_REAL_JOB_APIS', 'False') == 'True'
+JOB_SYNC_INTERVAL_HOURS = int(os.environ.get('JOB_SYNC_INTERVAL_HOURS', '1'))
+
+USE_REAL_COURSE_APIS = os.environ.get('USE_REAL_COURSE_APIS', 'False') == 'True'
+COURSE_SYNC_INTERVAL_HOURS = int(os.environ.get('COURSE_SYNC_INTERVAL_HOURS', '1'))
+
+LOGS_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOGS_DIR, exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGS_DIR, 'careerai.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],  # Start with just console logging
+            'level': 'INFO',
+        },
+        'job_search': {
+            'handlers': ['console'],  # Start with just console logging
+            'level': 'INFO',
+        },
+        'course': {
+            'handlers': ['console'],  # Start with just console logging
+            'level': 'INFO',
+        },
+    },
+}
