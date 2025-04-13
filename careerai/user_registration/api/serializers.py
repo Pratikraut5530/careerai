@@ -1,69 +1,18 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+from datetime import timedelta
+import uuid
+
 from ..models import (
-    User, UserProfile, Skill, Company, Location, 
-    EducationLevel, EmploymentType, DesiredWorkEnvironment, JobRole
+    User, Skill, Location, Company, EmploymentType,
+    UserSkill, PasswordResetToken, VerificationToken, UserPreference
 )
-
-class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password2 = serializers.CharField(write_only=True, required=True)
-
-    class Meta:
-        model = User
-        fields = ('email', 'username', 'password', 'password2', 'first_name', 'last_name')
-        extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True}
-        }
-
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
-        return attrs
-
-    def create(self, validated_data):
-        validated_data.pop('password2')
-        user = User.objects.create_user(**validated_data)
-        return user
-
-class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
-
-    def validate(self, attrs):
-        email = attrs.get('email')
-        password = attrs.get('password')
-
-        if email and password:
-            user = authenticate(request=self.context.get('request'), username=email, password=password)
-            if not user:
-                raise serializers.ValidationError('Unable to log in with provided credentials.')
-            if not user.is_active:
-                raise serializers.ValidationError('User account is disabled.')
-        else:
-            raise serializers.ValidationError('Must include "email" and "password".')
-
-        attrs['user'] = user
-        return attrs
-
-class UserSerializer(serializers.ModelSerializer):
-    is_profile_completed = serializers.BooleanField(read_only=True)
-
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_profile_completed')
-        read_only_fields = ('email',)
 
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
-        fields = '__all__'
-
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
         fields = '__all__'
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -71,102 +20,198 @@ class LocationSerializer(serializers.ModelSerializer):
         model = Location
         fields = '__all__'
 
-class EducationLevelSerializer(serializers.ModelSerializer):
+class CompanySerializer(serializers.ModelSerializer):
+    location = LocationSerializer(read_only=True)
+    location_id = serializers.PrimaryKeyRelatedField(
+        source='location',
+        queryset=Location.objects.all(),
+        write_only=True,
+        required=False,
+        allow_null=True
+    )
+    
     class Meta:
-        model = EducationLevel
-        fields = '__all__'
+        model = Company
+        fields = [
+            'id', 'name', 'description', 'website', 'logo',
+            'location', 'location_id'
+        ]
 
 class EmploymentTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmploymentType
         fields = '__all__'
 
-class DesiredWorkEnvironmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DesiredWorkEnvironment
-        fields = '__all__'
-
-class JobRoleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = JobRole
-        fields = '__all__'
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    location = LocationSerializer(read_only=True)
-    location_id = serializers.PrimaryKeyRelatedField(
-        queryset=Location.objects.all(),
-        source='location',
-        write_only=True,
-        required=False,
-        allow_null=True
-    )
-    
-    preferred_employment_type = EmploymentTypeSerializer(read_only=True)
-    preferred_employment_type_id = serializers.PrimaryKeyRelatedField(
-        queryset=EmploymentType.objects.all(),
-        source='preferred_employment_type',
-        write_only=True,
-        required=False,
-        allow_null=True
-    )
-    
-    education_level = EducationLevelSerializer(read_only=True)
-    education_level_id = serializers.PrimaryKeyRelatedField(
-        queryset=EducationLevel.objects.all(),
-        source='education_level',
-        write_only=True,
-        required=False,
-        allow_null=True
-    )
-    
-    desired_work_environments = DesiredWorkEnvironmentSerializer(many=True, read_only=True)
-    desired_work_environment_ids = serializers.PrimaryKeyRelatedField(
-        queryset=DesiredWorkEnvironment.objects.all(),
-        source='desired_work_environments',
-        write_only=True,
-        required=False,
-        many=True
-    )
-    
-    companies_of_interest = CompanySerializer(many=True, read_only=True)
-    companies_of_interest_ids = serializers.PrimaryKeyRelatedField(
-        queryset=Company.objects.all(),
-        source='companies_of_interest',
-        write_only=True,
-        required=False,
-        many=True
-    )
-    
-    job_roles_of_interest = JobRoleSerializer(many=True, read_only=True)
-    job_roles_of_interest_ids = serializers.PrimaryKeyRelatedField(
-        queryset=JobRole.objects.all(),
-        source='job_roles_of_interest',
-        write_only=True,
-        required=False,
-        many=True
-    )
-    
-    skills = SkillSerializer(many=True, read_only=True)
-    skill_ids = serializers.PrimaryKeyRelatedField(
+class UserSkillSerializer(serializers.ModelSerializer):
+    skill = SkillSerializer(read_only=True)
+    skill_id = serializers.PrimaryKeyRelatedField(
+        source='skill',
         queryset=Skill.objects.all(),
-        source='skills',
-        write_only=True,
-        required=False,
-        many=True
+        write_only=True
     )
     
-    user = UserSerializer(read_only=True)
-
     class Meta:
-        model = UserProfile
-        fields = (
-            'id', 'user', 'location', 'location_id', 'employment_status',
-            'preferred_employment_type', 'preferred_employment_type_id',
-            'desired_work_environments', 'desired_work_environment_ids',
-            'education_level', 'education_level_id', 'years_of_experience',
-            'companies_of_interest', 'companies_of_interest_ids',
-            'job_roles_of_interest', 'job_roles_of_interest_ids',
-            'skills', 'skill_ids', 'career_vision', 'portfolio_url',
-            'is_actively_job_searching', 'created_at', 'updated_at'
-        )
-        read_only_fields = ('created_at', 'updated_at')
+        model = UserSkill
+        fields = [
+            'id', 'user', 'skill', 'skill_id', 'proficiency_level',
+            'years_experience', 'is_primary'
+        ]
+        read_only_fields = ['user']
+    
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
+class UserPreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPreference
+        fields = [
+            'id', 'theme', 'language', 'timezone', 'dashboard_widgets'
+        ]
+        read_only_fields = ['user']
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    skills = serializers.SerializerMethodField()
+    preferences = UserPreferenceSerializer(read_only=True)
+    
+    class Meta:
+        model = User
+        fields = [
+            'id', 'email', 'password', 'confirm_password', 'first_name', 'last_name',
+            'bio', 'profile_picture', 'phone_number', 'current_position',
+            'years_of_experience', 'email_notifications', 'job_alert_notifications',
+            'course_notifications', 'date_joined', 'is_verified', 'skills', 'preferences'
+        ]
+        read_only_fields = ['date_joined', 'is_verified']
+    
+    def get_skills(self, obj):
+        user_skills = UserSkill.objects.filter(user=obj)
+        return UserSkillSerializer(user_skills, many=True, context=self.context).data
+    
+    def validate(self, data):
+        if data.get('password') != data.get('confirm_password'):
+            raise serializers.ValidationError({"confirm_password": _("Passwords do not match.")})
+        return data
+    
+    def create(self, validated_data):
+        validated_data.pop('confirm_password')
+        password = validated_data.pop('password')
+        
+        # Check if user already exists
+        email = validated_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({"email": "User with this email already exists."})
+        
+        # Create the user
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        
+        try:
+            # Create default user preferences if they don't exist
+            UserPreference.objects.get_or_create(user=user)
+            
+            # Create verification token
+            token = str(uuid.uuid4())
+            expiry = timezone.now() + timedelta(days=7)
+            VerificationToken.objects.create(
+                user=user,
+                token=token,
+                expires_at=expiry
+            )
+        except Exception as e:
+            print(f"Error during user setup: {str(e)}")
+            # We still want to return the user even if preferences setup fails
+        
+        return user
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True, style={'input_type': 'password'})
+    
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
+        
+        if email and password:
+            user = authenticate(request=self.context.get('request'), username=email, password=password)
+            if not user:
+                raise serializers.ValidationError(_("Invalid email or password."))
+            if not user.is_active:
+                raise serializers.ValidationError(_("This account is inactive."))
+        else:
+            raise serializers.ValidationError(_("Must include 'email' and 'password'."))
+        
+        data['user'] = user
+        return data
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    
+    def validate_email(self, value):
+        try:
+            User.objects.get(email=value)
+        except User.DoesNotExist:
+            raise serializers.ValidationError(_("No user found with this email address."))
+        return value
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+    password = serializers.CharField(required=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(required=True, style={'input_type': 'password'})
+    
+    def validate(self, data):
+        if data.get('password') != data.get('confirm_password'):
+            raise serializers.ValidationError({"confirm_password": _("Passwords do not match.")})
+        
+        try:
+            reset_token = PasswordResetToken.objects.get(token=data.get('token'))
+            if not reset_token.is_valid():
+                raise serializers.ValidationError({"token": _("Invalid or expired token.")})
+        except PasswordResetToken.DoesNotExist:
+            raise serializers.ValidationError({"token": _("Invalid token.")})
+        
+        return data
+
+class EmailVerificationSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True)
+    
+    def validate_token(self, value):
+        try:
+            verification_token = VerificationToken.objects.get(token=value)
+            if not verification_token.is_valid():
+                raise serializers.ValidationError(_("Invalid or expired token."))
+        except VerificationToken.DoesNotExist:
+            raise serializers.ValidationError(_("Invalid token."))
+        return value
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    """Serializer for updating user profiles."""
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name', 'bio', 'profile_picture', 
+            'phone_number', 'current_position', 'years_of_experience',
+            'email_notifications', 'job_alert_notifications', 
+            'course_notifications'
+        ]
+        
+    def validate_email(self, value):
+        """Ensure email isn't being changed or is unique if it is."""
+        user = self.instance
+        if user.email != value:
+            if User.objects.filter(email=value).exists():
+                raise serializers.ValidationError("A user with this email already exists.")
+        return value
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True, style={'input_type': 'password'})
+    new_password = serializers.CharField(required=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(required=True, style={'input_type': 'password'})
+    
+    def validate(self, data):
+        if data.get('new_password') != data.get('confirm_password'):
+            raise serializers.ValidationError({"confirm_password": _("Passwords do not match.")})
+        return data

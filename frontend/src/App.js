@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import axios from 'axios';
-import { API_URL } from './config';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
@@ -34,7 +32,7 @@ import ProfileDebugHelper from './components/helpers/ProfileDebugHelper';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading, user } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return <div className="loading">Checking authentication status...</div>;
@@ -51,30 +49,8 @@ const ProtectedRoute = ({ children }) => {
 // Profile Completion Check
 const ProfileRequiredRoute = ({ children }) => {
   const { isAuthenticated, loading, user } = useAuth();
-  const [checkingProfile, setCheckingProfile] = useState(false);
-
-  useEffect(() => {
-    // Check if we have a flag in localStorage indicating completion
-    // This is a fallback mechanism for the UI state
-    if (user && !user.is_profile_completed) {
-      const profileCompleted = localStorage.getItem('profile_completed') === 'true';
-      if (profileCompleted) {
-        console.log("Detected profile completion via localStorage flag");
-        // Force refresh user data - this is async but we don't need to wait
-        setCheckingProfile(true);
-        axios.get(`${API_URL}/api/auth/me/`)
-          .then(() => {
-            window.location.reload(); // Force a complete refresh to update the app state
-          })
-          .catch(err => {
-            console.error("Error refreshing user data:", err);
-            setCheckingProfile(false);
-          });
-      }
-    }
-  }, [user]);
-
-  if (loading || checkingProfile) {
+  
+  if (loading) {
     return <div className="loading">Verifying profile status...</div>;
   }
 
@@ -82,14 +58,10 @@ const ProfileRequiredRoute = ({ children }) => {
     return <Navigate to="/login" replace state={{ from: window.location }} />;
   }
 
-  // Explicit check for development with testing flag
-  if (process.env.NODE_ENV === 'development' && localStorage.getItem('profile_completed') === 'true') {
-    return children;
-  }
-
-  // Regular check for profile completion
-  if (!user?.is_profile_completed) {
-    console.log("Profile not completed, redirecting to complete-profile");
+  // Check if profile is completed or if localStorage has a flag
+  const profileCompleted = user?.is_profile_completed || localStorage.getItem('profile_completed') === 'true';
+  
+  if (!profileCompleted) {
     return <Navigate to="/complete-profile" replace />;
   }
 

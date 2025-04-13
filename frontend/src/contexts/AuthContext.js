@@ -194,6 +194,7 @@ export const AuthProvider = ({ children }) => {
       // Clear local storage and state regardless of API response
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem("profile_completed");
       delete axios.defaults.headers.common["Authorization"];
       setUser(null);
       setIsAuthenticated(false);
@@ -212,6 +213,9 @@ export const AuthProvider = ({ children }) => {
         const response = await axios.patch(`${API_URL}/api/auth/me/`, {
           is_profile_completed: profileData.is_profile_completed
         });
+        
+        // Update localStorage flag for UI state
+        localStorage.setItem('profile_completed', 'true');
         
         // Update user state with updated data
         setUser(prev => ({

@@ -1,9 +1,9 @@
 from rest_framework import viewsets, permissions, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Q, Avg
-from django.conf import settings
 from django.utils import timezone
+from django.db.models import Q, Avg, Count
+from django.conf import settings
 
 from ..models import CourseCategory, Course, Module, Lesson, Enrollment, LessonProgress, CourseReview
 from .serializers import (
@@ -163,7 +163,7 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
         """Get most popular courses based on enrollment count"""
         # Get courses with the most enrollments
         popular_courses = Course.objects.filter(is_active=True)\
-            .annotate(enrollment_count=models.Count('enrollments'))\
+            .annotate(enrollment_count=Count('enrollments'))\
             .order_by('-enrollment_count')[:10]
         
         serializer = CourseListSerializer(
@@ -179,8 +179,8 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
         # Get courses with at least 3 reviews and order by average rating
         top_courses = Course.objects.filter(is_active=True)\
             .annotate(
-                review_count=models.Count('reviews'),
-                avg_rating=models.Avg('reviews__rating')
+                review_count=Count('reviews'),
+                avg_rating=Avg('reviews__rating')
             )\
             .filter(review_count__gte=3)\
             .order_by('-avg_rating')[:10]
@@ -194,33 +194,54 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     
     @action(detail=False, methods=['get'])
     def recommended(self, request):
-        """Get course recommendations based on user's learning history"""
+        """Get recommended courses based on user's profile and learning history"""
         user = request.user
         
-        # Get categories of courses the user is enrolled in
-        user_categories = Course.objects.filter(
-            enrollments__user=user
-        ).values_list('category_id', flat=True).distinct()
+        if not user.is_authenticated:
+            return Response({"detail": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
         
-        # Get courses in those categories that the user is not enrolled in
-        if user_categories:
-            recommended_courses = Course.objects.filter(
-                category_id__in=user_categories,
-                is_active=True
-            ).exclude(
-                enrollments__user=user
-            ).order_by('-created_at')[:10]
+        # Get user's profile and skills
+        try:
+            profile = user.profile
+            user_skills = set(profile.skills.values_list('id', flat=True)) if hasattr(profile, 'skills') else set()
+            job_interests = set(profile.job_roles_of_interest.values_list('id', flat=True)) if hasattr(profile, 'job_roles_of_interest') else set()
+        except:
+            # If profile doesn't exist or doesn't have these fields
+            user_skills = set()
+            job_interests = set()
+        
+        # Get courses the user is already enrolled in
+        enrolled_courses = Enrollment.objects.filter(user=user).values_list('course_id', flat=True)
+        
+        # Base queryset excluding enrolled courses
+        courses = Course.objects.filter(is_active=True).exclude(id__in=enrolled_courses)\
+            .annotate(avg_rating=Avg('reviews__rating'))\
+            .annotate(review_count=Count('reviews'))
+        
+        # If user has skills or job interests, try to find relevant courses
+        if user_skills or job_interests:
+            # Get courses related to user's skills and interests
+            # This is a simplified recommendation - in a real app, this would be more sophisticated
+            recommended_courses = courses.order_by('-avg_rating', '-review_count')[:10]
         else:
-            # If user has no enrollments, get top-rated courses
-            recommended_courses = Course.objects.filter(is_active=True)\
-                .annotate(avg_rating=models.Avg('reviews__rating'))\
-                .order_by('-avg_rating')[:10]
+            # Get categories of courses the user is enrolled in
+            user_categories = Course.objects.filter(
+                enrollments__user=user
+            ).values_list('category_id', flat=True).distinct()
+            
+            # Get courses in those categories that the user is not enrolled in
+            if user_categories:
+                recommended_courses = Course.objects.filter(
+                    category_id__in=user_categories,
+                    is_active=True
+                ).exclude(
+                    id__in=enrolled_courses
+                ).order_by('-created_at')[:10]
+            else:
+                # If user has no enrollments or preferences, get top-rated courses
+                recommended_courses = courses.order_by('-avg_rating', '-review_count')[:10]
         
-        serializer = CourseListSerializer(
-            recommended_courses, 
-            many=True,
-            context={'request': request}
-        )
+        serializer = self.get_serializer(recommended_courses, many=True)
         return Response(serializer.data)
 
 

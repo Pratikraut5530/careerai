@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { getImageUrl } from '../utils/imageUtils';
 import './Home.css';
 
 const Home = () => {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="home-page">
@@ -25,7 +26,7 @@ const Home = () => {
           </div>
         </div>
         <div className="hero-image">
-          <img src="/images/hero-image.svg" alt="CareerAI platform" />
+          <img src={getImageUrl('general', 'hero-image')} alt="CareerAI platform" />
         </div>
       </section>
 
@@ -100,10 +101,10 @@ const Home = () => {
               <p>"CareerAI helped me identify the skills I needed to land my dream job in tech. The personalized learning path and resume feedback made all the difference."</p>
             </div>
             <div className="testimonial-author">
-              <img src="/images/testimonial-1.jpg" alt="Sarah J." />
+              <img src={getImageUrl('testimonial', 'testimonial1')} alt="Sarah J." />
               <div className="author-info">
-                <h4>Sarah J.</h4>
-                <p>Software Engineer at Google</p>
+                <h4>Sejal Parate.</h4>
+                <p>Software Engineer at Priro Systems</p>
               </div>
             </div>
           </div>
@@ -112,10 +113,10 @@ const Home = () => {
               <p>"The alumni mentorship program connected me with someone who had been in my shoes. Their guidance helped me navigate the job market and secure multiple offers."</p>
             </div>
             <div className="testimonial-author">
-              <img src="/images/testimonial-2.jpg" alt="Michael T." />
+              <img src={getImageUrl('testimonial', 'testimonial2')} alt="Michael T." />
               <div className="author-info">
-                <h4>Michael T.</h4>
-                <p>Data Analyst at Microsoft</p>
+                <h4>Shreya Giri</h4>
+                <p>Data Analyst at Colgate</p>
               </div>
             </div>
           </div>

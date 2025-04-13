@@ -214,3 +214,54 @@
       justify-content: center;
     }
   }
+
+  .analysis-visualization {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0 2rem;
+  }
+  
+  .analysis-illustration {
+    max-width: 100%;
+    height: auto;
+    max-height: 250px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .analysis-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Enhance existing section styling */
+  .analysis-section {
+    background-color: var(--gray-50);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    border-left: 4px solid var(--gray-300);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .analysis-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Color coding with enhanced colors */
+  .strengths-section {
+    border-left-color: #4CAF50; /* Green */
+    background-color: rgba(76, 175, 80, 0.05);
+  }
+  
+  .weaknesses-section {
+    border-left-color: #FF5722; /* Orange-red */
+    background-color: rgba(255, 87, 34, 0.05);
+  }
+  
+  .suggestions-section {
+    border-left-color: #2196F3; /* Blue */
+    background-color: rgba(33, 150, 243, 0.05);
+  }

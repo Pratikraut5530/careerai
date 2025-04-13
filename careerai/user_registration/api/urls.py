@@ -3,19 +3,32 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register(r'profile', views.UserProfileViewSet, basename='user-profile')
+router.register(r'users', views.UserViewSet, basename='user')
 router.register(r'skills', views.SkillViewSet, basename='skill')
-router.register(r'companies', views.CompanyViewSet, basename='company')
 router.register(r'locations', views.LocationViewSet, basename='location')
-router.register(r'education-levels', views.EducationLevelViewSet, basename='education-level')
+router.register(r'companies', views.CompanyViewSet, basename='company')
 router.register(r'employment-types', views.EmploymentTypeViewSet, basename='employment-type')
-router.register(r'work-environments', views.DesiredWorkEnvironmentViewSet, basename='work-environment')
-router.register(r'job-roles', views.JobRoleViewSet, basename='job-role')
+router.register(r'user-skills', views.UserSkillViewSet, basename='user-skill')
+router.register(r'preferences', views.UserPreferenceViewSet, basename='preference')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('register/', views.UserRegistrationView.as_view(), name='register'),
-    path('login/', views.UserLoginView.as_view(), name='login'),
-    path('logout/', views.UserLogoutView.as_view(), name='logout'),
-    path('me/', views.CurrentUserView.as_view(), name='current-user'),
+    
+    # Auth endpoints
+    path('register/', views.AuthViewSet.as_view({'post': 'register'}), name='register'),
+    path('login/', views.AuthViewSet.as_view({'post': 'login'}), name='login'),
+    path('logout/', views.AuthViewSet.as_view({'post': 'logout'}), name='logout'),
+    path('profile/', views.AuthViewSet.as_view({
+        'get': 'profile',
+        'post': 'profile',
+        'put': 'profile',
+        'patch': 'profile'
+    }), name='profile'),
+    path('me/', views.AuthViewSet.as_view({
+        'get': 'me',
+        'patch': 'me'
+    }), name='me'),
+    path('request_password_reset/', views.AuthViewSet.as_view({'post': 'request_password_reset'}), name='request_password_reset'),
+    path('confirm_password_reset/', views.AuthViewSet.as_view({'post': 'confirm_password_reset'}), name='confirm_password_reset'),
+    path('verify_email/', views.AuthViewSet.as_view({'post': 'verify_email'}), name='verify_email'),
 ]

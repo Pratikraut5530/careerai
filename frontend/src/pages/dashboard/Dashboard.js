@@ -6,6 +6,7 @@ import RecommendedJobs from '../../components/dashboard/RecommendedJobs';
 import { getUserEnrollments } from '../../services/courseService';
 import { getUserApplications } from '../../services/jobService';
 import { getUserResumes } from '../../services/learningService';
+import { getImageUrl } from '../../utils/imageUtils';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -115,7 +116,7 @@ const Dashboard = () => {
                   <div key={enrollment.id} className="enrollment-item">
                     <div className="enrollment-thumbnail">
                       <img 
-                        src={enrollment.course?.thumbnail || 'https://via.placeholder.com/80?text=Course'} 
+                        src={enrollment.course?.thumbnail || getImageUrl('course', enrollment.course_title)} 
                         alt={enrollment.course_title} 
                       />
                     </div>
@@ -196,7 +197,7 @@ const Dashboard = () => {
                   <div key={application.id} className="application-item">
                     <div className="application-company-logo">
                       <img 
-                        src={application.job?.company?.logo || 'https://via.placeholder.com/50?text=Logo'} 
+                        src={application.job?.company?.logo || getImageUrl('company', application.job?.company?.name)} 
                         alt={application.job?.company?.name} 
                       />
                     </div>

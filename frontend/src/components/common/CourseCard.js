@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getImageUrl } from '../../utils/imageUtils';
 import './CourseCard.css';
 
 const CourseCard = ({ course }) => {
@@ -35,7 +36,7 @@ const CourseCard = ({ course }) => {
     <div className="course-card">
       <div className="course-card-image">
         <img 
-          src={thumbnail || 'https://via.placeholder.com/300x200?text=Course+Image'} 
+          src={thumbnail || getImageUrl('course', category_name)} 
           alt={title} 
         />
         <span className={`difficulty-badge ${getDifficultyColor(difficulty_level)}`}>

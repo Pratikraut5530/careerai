@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getResumeAnalysis } from '../../services/learningService';
+import { getImageUrl } from '../../utils/imageUtils';
 import './ResumeAnalysis.css';
 
 const ResumeAnalysis = () => {
   const { resumeId } = useParams();
-  const navigate = useNavigate();
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -104,7 +104,7 @@ const ResumeAnalysis = () => {
           
           <div className="analysis-actions">
             <a 
-              href={analysis.resume?.file} 
+              href={analysis.resume?.file || getImageUrl('general', 'resume')} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn-secondary"
@@ -112,6 +112,14 @@ const ResumeAnalysis = () => {
               <i className="fas fa-download"></i> Download Resume
             </a>
           </div>
+        </div>
+        
+        <div className="analysis-visualization">
+          <img 
+            src={getImageUrl('general', 'resume-analysis')} 
+            alt="Resume Analysis Visualization" 
+            className="analysis-illustration"
+          />
         </div>
         
         <div className="analysis-sections">

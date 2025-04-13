@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getImageUrl } from '../../utils/imageUtils';
 import './JobCard.css';
 
 const JobCard = ({ job, onSave, onUnsave }) => {
@@ -48,7 +49,7 @@ const JobCard = ({ job, onSave, onUnsave }) => {
       <div className="job-card-header">
         <div className="job-card-company-logo">
           <img 
-            src={company?.logo || 'https://via.placeholder.com/50?text=Logo'} 
+            src={company?.logo || getImageUrl('company', company?.name)} 
             alt={company?.name} 
           />
         </div>

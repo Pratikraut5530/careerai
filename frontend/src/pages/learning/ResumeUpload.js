@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { uploadResume, getUserResumes } from '../../services/learningService';
+import { getImageUrl } from '../../utils/imageUtils';
 import './Learning.css';
 
 const ResumeUpload = () => {
@@ -164,7 +165,7 @@ const ResumeUpload = () => {
                         Submit for Analysis
                       </Link>
                     )}
-                    <a href={resume.file} target="_blank" rel="noopener noreferrer" className="btn-download">
+                    <a href={resume.file || getImageUrl('general', 'resume')} target="_blank" rel="noopener noreferrer" className="btn-download">
                       Download
                     </a>
                   </div>

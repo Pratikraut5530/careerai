@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getImageUrl } from '../../utils/imageUtils';
 import './AlumniCard.css';
 
 const AlumniCard = ({ alumni, showMentorInfo = false }) => {
@@ -21,7 +22,7 @@ const AlumniCard = ({ alumni, showMentorInfo = false }) => {
       <div className="alumni-card-header">
         <div className="alumni-card-avatar">
           <img 
-            src={user?.profile_image || 'https://via.placeholder.com/80?text=Avatar'} 
+            src={user?.profile_image || getImageUrl('avatar')} 
             alt={`${user?.first_name} ${user?.last_name}`} 
           />
         </div>

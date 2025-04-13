@@ -1,6 +1,62 @@
 import axios from 'axios';
 import { API_URL } from '../config';
 
+// Mock data for fallback when API fails
+const mockCourses = [
+  {
+    id: 1,
+    title: 'Introduction to Web Development',
+    description: 'Learn the fundamentals of web development including HTML, CSS and JavaScript.',
+    category_name: 'Web Development',
+    difficulty_level: 'beginner',
+    duration_in_weeks: 6,
+    instructor_name: 'John Doe',
+    thumbnail: 'https://via.placeholder.com/300x200?text=Web+Dev',
+    average_rating: 4.5,
+    total_reviews: 120,
+    is_enrolled: false
+  },
+  {
+    id: 2,
+    title: 'Data Science Fundamentals',
+    description: 'Introduction to data science concepts, tools and methodologies.',
+    category_name: 'Data Science',
+    difficulty_level: 'intermediate',
+    duration_in_weeks: 8,
+    instructor_name: 'Jane Smith',
+    thumbnail: 'https://via.placeholder.com/300x200?text=Data+Science',
+    average_rating: 4.2,
+    total_reviews: 85,
+    is_enrolled: false
+  },
+  {
+    id: 3,
+    title: 'Machine Learning Basics',
+    description: 'Learn the fundamentals of machine learning algorithms and applications.',
+    category_name: 'Machine Learning',
+    difficulty_level: 'intermediate',
+    duration_in_weeks: 10,
+    instructor_name: 'Alex Johnson',
+    thumbnail: 'https://via.placeholder.com/300x200?text=Machine+Learning',
+    average_rating: 4.8,
+    total_reviews: 95,
+    is_enrolled: false
+  },
+  {
+    id: 4,
+    title: 'Python for Beginners',
+    description: 'Start your programming journey with Python, one of the most popular languages.',
+    category_name: 'Programming',
+    difficulty_level: 'beginner',
+    duration_in_weeks: 4,
+    instructor_name: 'Michael Brown',
+    thumbnail: 'https://via.placeholder.com/300x200?text=Python',
+    average_rating: 4.7,
+    total_reviews: 150,
+    is_enrolled: false
+  }
+];
+
 // Get all courses with optional filters
 export const getCourses = async (params = {}) => {
   try {
@@ -8,7 +64,7 @@ export const getCourses = async (params = {}) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching courses:', error);
-    throw error;
+    return []; // Return empty array on error
   }
 };
 
@@ -42,7 +98,7 @@ export const getUserEnrollments = async () => {
   } catch (error) {
     console.error('Error fetching user enrollments:', error);
     // Return empty array for development/testing if API fails
-    console.log('Returning mock data for development');
+    console.log('Returning mock data for enrollments');
     return [
       {
         id: 1,
@@ -80,60 +136,7 @@ export const getRecommendedCourses = async () => {
   } catch (error) {
     console.error('Error fetching recommended courses:', error);
     // Return mock data for development/testing
-    return [
-      {
-        id: 1,
-        title: 'Introduction to Web Development',
-        description: 'Learn the fundamentals of web development including HTML, CSS and JavaScript.',
-        category_name: 'Web Development',
-        difficulty_level: 'beginner',
-        duration_in_weeks: 6,
-        instructor_name: 'John Doe',
-        thumbnail: 'https://via.placeholder.com/300x200?text=Web+Dev',
-        average_rating: 4.5,
-        total_reviews: 120,
-        is_enrolled: false
-      },
-      {
-        id: 2,
-        title: 'Data Science Fundamentals',
-        description: 'Introduction to data science concepts, tools and methodologies.',
-        category_name: 'Data Science',
-        difficulty_level: 'intermediate',
-        duration_in_weeks: 8,
-        instructor_name: 'Jane Smith',
-        thumbnail: 'https://via.placeholder.com/300x200?text=Data+Science',
-        average_rating: 4.2,
-        total_reviews: 85,
-        is_enrolled: false
-      },
-      {
-        id: 3,
-        title: 'Machine Learning Basics',
-        description: 'Learn the fundamentals of machine learning algorithms and applications.',
-        category_name: 'Machine Learning',
-        difficulty_level: 'intermediate',
-        duration_in_weeks: 10,
-        instructor_name: 'Alex Johnson',
-        thumbnail: 'https://via.placeholder.com/300x200?text=Machine+Learning',
-        average_rating: 4.8,
-        total_reviews: 95,
-        is_enrolled: false
-      },
-      {
-        id: 4,
-        title: 'Python for Beginners',
-        description: 'Start your programming journey with Python, one of the most popular languages.',
-        category_name: 'Programming',
-        difficulty_level: 'beginner',
-        duration_in_weeks: 4,
-        instructor_name: 'Michael Brown',
-        thumbnail: 'https://via.placeholder.com/300x200?text=Python',
-        average_rating: 4.7,
-        total_reviews: 150,
-        is_enrolled: false
-      }
-    ];
+    return mockCourses;
   }
 };
 
