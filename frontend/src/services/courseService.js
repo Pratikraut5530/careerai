@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { API_URL } from '../config';
+// import axios from 'axios';
+// import { API_URL } from '../config';
 
-// Mock data for fallback when API fails
+// Mock data for courses
 const mockCourses = [
   {
     id: 1,
@@ -57,132 +57,157 @@ const mockCourses = [
   }
 ];
 
+// Mock enrollment data
+const mockEnrollments = [
+  {
+    id: 1,
+    course: {
+      id: 1,
+      title: 'Introduction to Web Development',
+      thumbnail: 'https://via.placeholder.com/300x200?text=Web+Dev',
+    },
+    course_title: 'Introduction to Web Development',
+    enrolled_at: '2025-01-15T12:00:00Z',
+    completed: false,
+    progress_percentage: 45
+  },
+  {
+    id: 2,
+    course: {
+      id: 2,
+      title: 'Data Science Fundamentals',
+      thumbnail: 'https://via.placeholder.com/300x200?text=Data+Science',
+    },
+    course_title: 'Data Science Fundamentals',
+    enrolled_at: '2025-02-10T15:30:00Z',
+    completed: false,
+    progress_percentage: 25
+  }
+];
+
+// Mock course categories
+const mockCategories = [
+  { id: 1, name: 'Web Development' },
+  { id: 2, name: 'Data Science' },
+  { id: 3, name: 'Machine Learning' },
+  { id: 4, name: 'Programming' },
+  { id: 5, name: 'Mobile Development' },
+  { id: 6, name: 'DevOps' }
+];
+
 // Get all courses with optional filters
 export const getCourses = async (params = {}) => {
-  try {
-    const response = await axios.get(`${API_URL}/api/courses/courses/`, { params });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching courses:', error);
-    return []; // Return empty array on error
-  }
+  // Always return mock data for presentation
+  return mockCourses;
 };
 
 // Get a specific course by ID
 export const getCourseById = async (courseId) => {
-  try {
-    const response = await axios.get(`${API_URL}/api/courses/courses/${courseId}/`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching course ${courseId}:`, error);
-    throw error;
+  // Find the course in mock data
+  const course = mockCourses.find(c => c.id === parseInt(courseId));
+  
+  if (!course) {
+    throw new Error(`Course with ID ${courseId} not found`);
   }
+  
+  // Add additional details for course detail page
+  return {
+    ...course,
+    modules: [
+      {
+        id: 1,
+        title: 'Getting Started',
+        description: 'Introduction to the course and setting up your environment',
+        lessons: [
+          {
+            id: 1,
+            title: 'Welcome to the Course',
+            content_type: 'video',
+            estimated_time_minutes: 10
+          },
+          {
+            id: 2,
+            title: 'Setting Up Your Development Environment',
+            content_type: 'video',
+            estimated_time_minutes: 15
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: 'Core Concepts',
+        description: 'Learn the fundamental concepts of the subject',
+        lessons: [
+          {
+            id: 3,
+            title: 'Understanding the Basics',
+            content_type: 'video',
+            estimated_time_minutes: 20
+          },
+          {
+            id: 4,
+            title: 'Practical Exercise',
+            content_type: 'assignment',
+            estimated_time_minutes: 30
+          }
+        ]
+      }
+    ],
+    reviews: [
+      {
+        id: 1,
+        user_name: 'Sarah P.',
+        rating: 5,
+        comment: 'Excellent course! Very well explained with practical examples.',
+        created_at: '2025-03-10T14:22:00Z'
+      },
+      {
+        id: 2,
+        user_name: 'David M.',
+        rating: 4,
+        comment: 'Great content, though some sections could be more detailed.',
+        created_at: '2025-02-25T09:15:00Z'
+      }
+    ]
+  };
 };
 
 // Enroll in a course
 export const enrollInCourse = async (courseId) => {
-  try {
-    const response = await axios.post(`${API_URL}/api/courses/courses/${courseId}/enroll/`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error enrolling in course ${courseId}:`, error);
-    throw error;
-  }
+  return { success: true, message: 'Successfully enrolled in the course!' };
 };
 
 // Get current user's enrollments
 export const getUserEnrollments = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/api/courses/enrollments/`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching user enrollments:', error);
-    // Return empty array for development/testing if API fails
-    console.log('Returning mock data for enrollments');
-    return [
-      {
-        id: 1,
-        course: {
-          id: 1,
-          title: 'Introduction to Web Development',
-          thumbnail: 'https://via.placeholder.com/300x200?text=Web+Dev',
-        },
-        course_title: 'Introduction to Web Development',
-        enrolled_at: '2025-01-15T12:00:00Z',
-        completed: false,
-        progress_percentage: 45
-      },
-      {
-        id: 2,
-        course: {
-          id: 2,
-          title: 'Data Science Fundamentals',
-          thumbnail: 'https://via.placeholder.com/300x200?text=Data+Science',
-        },
-        course_title: 'Data Science Fundamentals',
-        enrolled_at: '2025-02-10T15:30:00Z',
-        completed: false,
-        progress_percentage: 25
-      }
-    ];
-  }
+  return mockEnrollments;
 };
 
 // Get recommended courses
 export const getRecommendedCourses = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/api/courses/courses/recommended/`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching recommended courses:', error);
-    // Return mock data for development/testing
-    return mockCourses;
-  }
+  return mockCourses;
 };
 
 // Mark a lesson as complete
 export const markLessonComplete = async (courseId, moduleId, lessonId, timeSpent) => {
-  try {
-    const response = await axios.post(
-      `${API_URL}/api/courses/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/mark_complete/`,
-      { time_spent_minutes: timeSpent }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(`Error marking lesson ${lessonId} as complete:`, error);
-    throw error;
-  }
+  return {
+    success: true,
+    message: 'Lesson marked as complete',
+    progress_percentage: 50
+  };
 };
 
 // Get all course categories
 export const getCourseCategories = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/api/courses/categories/`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching course categories:', error);
-    // Return mock data for development/testing
-    return [
-      { id: 1, name: 'Web Development' },
-      { id: 2, name: 'Data Science' },
-      { id: 3, name: 'Machine Learning' },
-      { id: 4, name: 'Programming' },
-      { id: 5, name: 'Mobile Development' },
-      { id: 6, name: 'DevOps' }
-    ];
-  }
+  return mockCategories;
 };
 
 // Submit a review for a course
 export const submitCourseReview = async (courseId, reviewData) => {
-  try {
-    const response = await axios.post(
-      `${API_URL}/api/courses/courses/${courseId}/review/`,
-      reviewData
-    );
-    return response.data;
-  } catch (error) {
-    console.error(`Error submitting review for course ${courseId}:`, error);
-    throw error;
-  }
+  return {
+    id: Math.floor(Math.random() * 1000) + 100,
+    user_name: 'You',
+    rating: reviewData.rating,
+    comment: reviewData.comment,
+    created_at: new Date().toISOString()
+  };
 };

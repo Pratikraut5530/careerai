@@ -190,6 +190,11 @@ export const getProfileFormOptions = async () => {
   try {
     console.log("Fetching profile form options...");
     
+    // For presentation, directly return mock data
+    return getMockOptions();
+    
+    // The following code is kept for reference, but for the presentation, we'll skip the API calls
+    /*
     // Fetch all necessary data for profile form in parallel
     const [
       skillsResponse,
@@ -218,6 +223,7 @@ export const getProfileFormOptions = async () => {
       workEnvironments: workEnvironmentsResponse.data || [],
       jobRoles: jobRolesResponse.data || []
     };
+    */
   } catch (error) {
     console.error("Error fetching profile form options:", error);
     
@@ -273,8 +279,47 @@ function getMockOptions() {
 
 export const getUserProfile = async () => {
   try {
+    // For the presentation, return a mock profile
+    return {
+      id: 1,
+      user: {
+        id: 1,
+        first_name: "John",
+        last_name: "Doe"
+      },
+      location: { id: 6, name: "Karnataka - Bengaluru" },
+      employment_status: "employed",
+      preferred_employment_type: { id: 1, name: "Full-time" },
+      education_level: { id: 3, name: "Bachelor's Degree" },
+      years_of_experience: 3,
+      skills: [
+        { id: 1, name: "JavaScript" },
+        { id: 18, name: "React" },
+        { id: 31, name: "Node.js" }
+      ],
+      desired_work_environments: [
+        { id: 1, name: "Remote" },
+        { id: 2, name: "Hybrid" }
+      ],
+      companies_of_interest: [
+        { id: 1, name: "Google" },
+        { id: 3, name: "Amazon" }
+      ],
+      job_roles_of_interest: [
+        { id: 6, name: "Frontend Developer" },
+        { id: 8, name: "Full Stack Developer" }
+      ],
+      career_vision: "I aim to become a senior full-stack developer leading projects that make a positive impact.",
+      portfolio_url: "https://johndoe-portfolio.com",
+      is_actively_job_searching: true,
+      is_profile_completed: true
+    };
+    
+    // The following code is kept for reference
+    /*
     const response = await axios.get(`${API_URL}/api/auth/profile/`);
     return response.data;
+    */
   } catch (error) {
     console.error("Error fetching user profile:", error);
     
@@ -292,6 +337,17 @@ export const createUserProfile = async (profileData) => {
     // Format data for API compatibility
     const formattedData = formatProfileData(profileData);
     
+    // For presentation, directly return success
+    console.log("Creating profile with data:", formattedData);
+    
+    return { 
+      success: true,
+      message: "Profile created successfully",
+      ...formattedData
+    };
+    
+    // The following code is kept for reference
+    /*
     // Try sending request to the API
     try {
       const response = await axios.post(`${API_URL}/api/auth/profile/`, formattedData, {
@@ -312,6 +368,7 @@ export const createUserProfile = async (profileData) => {
       }
       throw apiError;
     }
+    */
   } catch (error) {
     console.error("Error creating user profile:", error);
     console.error("Error details:", error.response?.data);
@@ -338,8 +395,20 @@ export const updateUserProfile = async (profileData) => {
   try {
     const formattedData = formatProfileData(profileData);
     
+    // For presentation, directly return success
+    console.log("Updating profile with data:", formattedData);
+    
+    return { 
+      success: true,
+      message: "Profile updated successfully",
+      ...formattedData
+    };
+    
+    // The following code is kept for reference
+    /*
     const response = await axios.put(`${API_URL}/api/auth/profile/`, formattedData);
     return response.data;
+    */
   } catch (error) {
     console.error("Error updating user profile:", error);
     
@@ -398,98 +467,66 @@ function formatProfileData(profileData) {
 
 // Get skills
 export const getSkills = async (search = '') => {
-  try {
-    const response = await axios.get(`${API_URL}/api/auth/skills/`, {
-      params: { search }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching skills:", error);
-    // Return techSkills list if API fails
-    return techSkills;
-  }
+  // Return techSkills list for presentation
+  return techSkills;
 };
 
 // Get companies
 export const getCompanies = async (search = '') => {
-  try {
-    const response = await axios.get(`${API_URL}/api/auth/companies/`, {
-      params: { search }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching companies:", error);
-    // Return mock data for development
-    return [
-      { id: 1, name: "Google" },
-      { id: 2, name: "Microsoft" },
-      { id: 3, name: "Amazon" },
-      { id: 4, name: "Meta (Facebook)" },
-      { id: 5, name: "Apple" },
-      { id: 6, name: "Netflix" },
-      { id: 7, name: "Adobe" },
-      { id: 8, name: "IBM" },
-      { id: 9, name: "Intel" },
-      { id: 10, name: "Oracle" },
-      { id: 11, name: "Salesforce" },
-      { id: 12, name: "Cisco" },
-      { id: 13, name: "Infosys" },
-      { id: 14, name: "TCS" },
-      { id: 15, name: "Wipro" },
-      { id: 16, name: "HCL Technologies" },
-      { id: 17, name: "Tech Mahindra" },
-      { id: 18, name: "Capgemini" },
-      { id: 19, name: "Accenture" },
-      { id: 20, name: "Cognizant" }
-    ];
-  }
+  // Return mock data for presentation
+  return [
+    { id: 1, name: "Google" },
+    { id: 2, name: "Microsoft" },
+    { id: 3, name: "Amazon" },
+    { id: 4, name: "Meta (Facebook)" },
+    { id: 5, name: "Apple" },
+    { id: 6, name: "Netflix" },
+    { id: 7, name: "Adobe" },
+    { id: 8, name: "IBM" },
+    { id: 9, name: "Intel" },
+    { id: 10, name: "Oracle" },
+    { id: 11, name: "Salesforce" },
+    { id: 12, name: "Cisco" },
+    { id: 13, name: "Infosys" },
+    { id: 14, name: "TCS" },
+    { id: 15, name: "Wipro" },
+    { id: 16, name: "HCL Technologies" },
+    { id: 17, name: "Tech Mahindra" },
+    { id: 18, name: "Capgemini" },
+    { id: 19, name: "Accenture" },
+    { id: 20, name: "Cognizant" }
+  ];
 };
 
 // Get locations
 export const getLocations = async (search = '') => {
-  try {
-    const response = await axios.get(`${API_URL}/api/auth/locations/`, {
-      params: { search }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching locations:", error);
-    // Return indianLocations list if API fails
-    return indianLocations;
-  }
+  // Return indianLocations list for presentation
+  return indianLocations;
 };
 
 // Get job roles
 export const getJobRoles = async (search = '') => {
-  try {
-    const response = await axios.get(`${API_URL}/api/auth/job-roles/`, {
-      params: { search }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching job roles:", error);
-    // Return mock data for development
-    return [
-      { id: 1, name: "Software Engineer" },
-      { id: 2, name: "Data Scientist" },
-      { id: 3, name: "Product Manager" },
-      { id: 4, name: "UX Designer" },
-      { id: 5, name: "DevOps Engineer" },
-      { id: 6, name: "Frontend Developer" },
-      { id: 7, name: "Backend Developer" },
-      { id: 8, name: "Full Stack Developer" },
-      { id: 9, name: "Mobile Developer" },
-      { id: 10, name: "AI/ML Engineer" },
-      { id: 11, name: "Cloud Architect" },
-      { id: 12, name: "QA Engineer" },
-      { id: 13, name: "Security Engineer" },
-      { id: 14, name: "Data Engineer" },
-      { id: 15, name: "Technical Writer" },
-      { id: 16, name: "Technical Support" },
-      { id: 17, name: "System Administrator" },
-      { id: 18, name: "Database Administrator" },
-      { id: 19, name: "Blockchain Developer" },
-      { id: 20, name: "Game Developer" }
-    ];
-  }
+  // Return mock data for presentation
+  return [
+    { id: 1, name: "Software Engineer" },
+    { id: 2, name: "Data Scientist" },
+    { id: 3, name: "Product Manager" },
+    { id: 4, name: "UX Designer" },
+    { id: 5, name: "DevOps Engineer" },
+    { id: 6, name: "Frontend Developer" },
+    { id: 7, name: "Backend Developer" },
+    { id: 8, name: "Full Stack Developer" },
+    { id: 9, name: "Mobile Developer" },
+    { id: 10, name: "AI/ML Engineer" },
+    { id: 11, name: "Cloud Architect" },
+    { id: 12, name: "QA Engineer" },
+    { id: 13, name: "Security Engineer" },
+    { id: 14, name: "Data Engineer" },
+    { id: 15, name: "Technical Writer" },
+    { id: 16, name: "Technical Support" },
+    { id: 17, name: "System Administrator" },
+    { id: 18, name: "Database Administrator" },
+    { id: 19, name: "Blockchain Developer" },
+    { id: 20, name: "Game Developer" }
+  ];
 };

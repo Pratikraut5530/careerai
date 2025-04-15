@@ -1,5 +1,5 @@
-import { API_URL } from '../config';
-import axios from 'axios';
+// import { API_URL } from '../config';
+// import axios from 'axios';
 
 // Indian states and tech cities list
 export const indianLocations = [
@@ -150,12 +150,6 @@ export const indianLocations = [
 ];
 
 export const getLocations = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/api/auth/locations/`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching locations:", error);
-    // Return the predefined list if the API fails
-    return indianLocations;
-  }
+  // Always return the predefined list for presentation
+  return indianLocations;
 };
