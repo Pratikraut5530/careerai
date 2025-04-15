@@ -189,6 +189,7 @@ LINKEDIN_API_KEY = os.environ.get('LINKEDIN_API_KEY', '')
 UDEMY_CLIENT_ID = os.environ.get('UDEMY_CLIENT_ID', '')
 UDEMY_CLIENT_SECRET = os.environ.get('UDEMY_CLIENT_SECRET', '')
 COURSERA_API_KEY = os.environ.get('COURSERA_API_KEY', '')
+CLAUDE_API_KEY =  os.environ.get('CLAUDE_API_KEY','')
 
 # API integration settings
 USE_REAL_JOB_APIS = os.environ.get('USE_REAL_JOB_APIS', 'False') == 'True'

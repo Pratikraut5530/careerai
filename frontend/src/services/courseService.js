@@ -1,5 +1,6 @@
 // import axios from 'axios';
 // import { API_URL } from '../config';
+import { getImageUrl } from '../utils/imageUtils';
 
 // Mock data for courses
 const mockCourses = [
@@ -11,7 +12,7 @@ const mockCourses = [
     difficulty_level: 'beginner',
     duration_in_weeks: 6,
     instructor_name: 'John Doe',
-    thumbnail: 'https://via.placeholder.com/300x200?text=Web+Dev',
+    thumbnail: getImageUrl('course', 'Web Development'),
     average_rating: 4.5,
     total_reviews: 120,
     is_enrolled: false
@@ -24,7 +25,7 @@ const mockCourses = [
     difficulty_level: 'intermediate',
     duration_in_weeks: 8,
     instructor_name: 'Jane Smith',
-    thumbnail: 'https://via.placeholder.com/300x200?text=Data+Science',
+    thumbnail: getImageUrl('course', 'Data Science'),
     average_rating: 4.2,
     total_reviews: 85,
     is_enrolled: false
@@ -37,7 +38,7 @@ const mockCourses = [
     difficulty_level: 'intermediate',
     duration_in_weeks: 10,
     instructor_name: 'Alex Johnson',
-    thumbnail: 'https://via.placeholder.com/300x200?text=Machine+Learning',
+    thumbnail: getImageUrl('course', 'Machine Learning'),
     average_rating: 4.8,
     total_reviews: 95,
     is_enrolled: false
@@ -50,21 +51,21 @@ const mockCourses = [
     difficulty_level: 'beginner',
     duration_in_weeks: 4,
     instructor_name: 'Michael Brown',
-    thumbnail: 'https://via.placeholder.com/300x200?text=Python',
+    thumbnail: getImageUrl('course', 'Programming'),
     average_rating: 4.7,
     total_reviews: 150,
     is_enrolled: false
   }
 ];
 
-// Mock enrollment data
+// Update mockEnrollments
 const mockEnrollments = [
   {
     id: 1,
     course: {
       id: 1,
       title: 'Introduction to Web Development',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Web+Dev',
+      thumbnail: getImageUrl('course', 'Web Development'),
     },
     course_title: 'Introduction to Web Development',
     enrolled_at: '2025-01-15T12:00:00Z',
@@ -76,7 +77,7 @@ const mockEnrollments = [
     course: {
       id: 2,
       title: 'Data Science Fundamentals',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Data+Science',
+      thumbnail: getImageUrl('course', 'Data Science'),
     },
     course_title: 'Data Science Fundamentals',
     enrolled_at: '2025-02-10T15:30:00Z',

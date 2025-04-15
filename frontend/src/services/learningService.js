@@ -1,12 +1,13 @@
 // import axios from 'axios';
 // import { API_URL } from '../config';
+import { getImageUrl } from '../utils/imageUtils';
 
 // Mock resumes data
 const mockResumes = [
   {
     id: 1,
     title: 'Software Developer Resume',
-    file: 'http://example.com/resume1.pdf',
+    file: getImageUrl('general', 'resume'),
     version: 1,
     status: 'reviewed',
     created_at: '2025-02-10T10:15:00Z',
@@ -15,7 +16,7 @@ const mockResumes = [
   {
     id: 2,
     title: 'Data Scientist Resume',
-    file: 'http://example.com/resume2.pdf',
+    file: getImageUrl('general', 'resume'),
     version: 1,
     status: 'draft',
     created_at: '2025-03-05T09:20:00Z',
@@ -130,7 +131,8 @@ const mockResumeAnalysis = {
   resume: {
     id: 1,
     title: 'Software Developer Resume',
-    status: 'reviewed'
+    status: 'reviewed',
+    file: getImageUrl('general', 'resume')
   },
   analysis_text: 'Overall, your resume is well-structured and highlights relevant skills and experiences for software development positions. However, there are some areas for improvement.',
   strengths: '- Clear organization and formatting\n- Strong technical skills section\n- Quantified achievements',
@@ -146,7 +148,7 @@ export const uploadResume = async (resumeData) => {
   const newResume = {
     id: mockResumes.length + 1,
     title: resumeData.title,
-    file: 'http://example.com/resume' + (mockResumes.length + 1) + '.pdf',
+    file: getImageUrl('general', 'resume'), // Using the utility function
     version: 1,
     status: 'draft',
     created_at: new Date().toISOString(),

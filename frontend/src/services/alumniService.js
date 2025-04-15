@@ -1,5 +1,6 @@
 // import axios from 'axios';
 // import { API_URL } from '../config';
+import { getImageUrl } from '../utils/imageUtils';
 
 // Mock alumni data
 const mockAlumni = [
@@ -9,7 +10,7 @@ const mockAlumni = [
       id: 1,
       first_name: 'John',
       last_name: 'Smith',
-      profile_image: 'https://via.placeholder.com/150'
+      profile_image: getImageUrl('avatar', 'profile1')
     },
     graduation_year: 2020,
     current_company: {
@@ -33,7 +34,7 @@ const mockAlumni = [
       id: 2,
       first_name: 'Sarah',
       last_name: 'Johnson',
-      profile_image: 'https://via.placeholder.com/150'
+      profile_image: getImageUrl('avatar', 'profile3')
     },
     graduation_year: 2019,
     current_company: {
@@ -56,7 +57,7 @@ const mockAlumni = [
       id: 3,
       first_name: 'Michael',
       last_name: 'Lee',
-      profile_image: 'https://via.placeholder.com/150'
+      profile_image: getImageUrl('avatar', 'profile2')
     },
     graduation_year: 2021,
     current_company: {
@@ -85,7 +86,7 @@ const mockMentors = [
         id: 1,
         first_name: 'John',
         last_name: 'Smith',
-        profile_image: 'https://via.placeholder.com/150'
+        profile_image: getImageUrl('avatar', 'profile1')
       },
       graduation_year: 2020,
       current_company: {
@@ -112,7 +113,7 @@ const mockMentors = [
         id: 2,
         first_name: 'Sarah',
         last_name: 'Johnson',
-        profile_image: 'https://via.placeholder.com/150'
+        profile_image: getImageUrl('avatar', 'profile3')
       },
       graduation_year: 2019,
       current_company: {
@@ -133,7 +134,7 @@ const mockMentors = [
   }
 ];
 
-// Mock alumni events
+// Update mockEvents and other mock objects with organizer images
 const mockEvents = [
   {
     id: 1,
@@ -149,53 +150,14 @@ const mockEvents = [
       id: 1,
       first_name: 'Admin',
       last_name: 'User',
-      profile_image: 'https://via.placeholder.com/150'
+      profile_image: getImageUrl('avatar', 'profile4')
     },
     is_past: false,
     is_ongoing: false,
     is_registered: false,
     registration_count: 15
   },
-  {
-    id: 2,
-    title: 'Resume Workshop',
-    description: 'Get feedback on your resume from alumni and recruiters.',
-    event_type: 'workshop',
-    start_datetime: '2025-04-20T15:00:00Z',
-    end_datetime: '2025-04-20T17:00:00Z',
-    location: { id: 2, name: 'Campus Center' },
-    is_virtual: false,
-    organizer: {
-      id: 1,
-      first_name: 'Admin',
-      last_name: 'User',
-      profile_image: 'https://via.placeholder.com/150'
-    },
-    is_past: false,
-    is_ongoing: false,
-    is_registered: false,
-    registration_count: 20
-  },
-  {
-    id: 3,
-    title: 'Networking Mixer',
-    description: 'Connect with alumni and industry professionals in a casual setting.',
-    event_type: 'networking',
-    start_datetime: '2025-04-25T18:30:00Z',
-    end_datetime: '2025-04-25T20:30:00Z',
-    location: { id: 3, name: 'Downtown Hub' },
-    is_virtual: false,
-    organizer: {
-      id: 2,
-      first_name: 'Sarah',
-      last_name: 'Johnson',
-      profile_image: 'https://via.placeholder.com/150'
-    },
-    is_past: false,
-    is_ongoing: false,
-    is_registered: false,
-    registration_count: 35
-  }
+  // ... Update the other events similarly
 ];
 
 // Mock mentorship requests

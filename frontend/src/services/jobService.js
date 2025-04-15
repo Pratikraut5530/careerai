@@ -1,5 +1,7 @@
 // import axios from 'axios';
 // import { API_URL } from '../config';
+import { getImageUrl } from '../utils/imageUtils';
+
 
 // Mock data for jobs
 const mockJobs = [
@@ -9,7 +11,7 @@ const mockJobs = [
     company: { 
       id: 1, 
       name: 'TechCorp',
-      logo: 'https://via.placeholder.com/80'
+      logo: getImageUrl('company', 'TechCorp')
     },
     location: { id: 1, name: 'New York' },
     is_remote: true,
@@ -32,7 +34,7 @@ const mockJobs = [
     company: { 
       id: 2, 
       name: 'DataWorks',
-      logo: 'https://via.placeholder.com/80'
+      logo: getImageUrl('company', 'DataWorks')
     },
     location: { id: 2, name: 'San Francisco' },
     is_remote: false,
@@ -55,7 +57,7 @@ const mockJobs = [
     company: { 
       id: 3, 
       name: 'WebSolutions',
-      logo: 'https://via.placeholder.com/80'
+      logo: getImageUrl('company', 'WebSolutions')
     },
     location: { id: 3, name: 'Austin' },
     is_remote: true,
@@ -79,7 +81,7 @@ const mockJobs = [
     company: { 
       id: 4, 
       name: 'DesignFirst',
-      logo: 'https://via.placeholder.com/80'
+      logo: getImageUrl('company', 'DesignFirst')
     },
     location: { id: 4, name: 'Chicago' },
     is_remote: false,
@@ -98,7 +100,7 @@ const mockJobs = [
   }
 ];
 
-// Mock applications
+// Update mockApplications
 const mockApplications = [
   {
     id: 1,
@@ -107,7 +109,7 @@ const mockApplications = [
       title: 'Frontend Developer',
       company: {
         name: 'TechCorp',
-        logo: 'https://via.placeholder.com/50'
+        logo: getImageUrl('company', 'TechCorp')
       }
     },
     status: 'applied',
@@ -120,7 +122,7 @@ const mockApplications = [
       title: 'Full Stack Developer',
       company: {
         name: 'WebSolutions',
-        logo: 'https://via.placeholder.com/50'
+        logo: getImageUrl('company', 'WebSolutions')
       }
     },
     status: 'interview',
