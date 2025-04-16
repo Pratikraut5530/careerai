@@ -8,16 +8,16 @@ const mockAlumni = [
     id: 1,
     user: {
       id: 1,
-      first_name: 'John',
-      last_name: 'Smith',
+      first_name: 'Amarjeet',
+      last_name: 'Kawathe',
       profile_image: getImageUrl('avatar', 'profile1')
     },
     graduation_year: 2020,
     current_company: {
       id: 1,
-      name: 'Google'
+      name: 'NeudayAi'
     },
-    position: 'Software Engineer',
+    position: 'CEO and Founder',
     is_mentor: true,
     is_available_for_referrals: true,
     skills: [
@@ -32,16 +32,16 @@ const mockAlumni = [
     id: 2,
     user: {
       id: 2,
-      first_name: 'Sarah',
-      last_name: 'Johnson',
+      first_name: 'Nayan',
+      last_name: 'Chandak',
       profile_image: getImageUrl('avatar', 'profile3')
     },
     graduation_year: 2019,
     current_company: {
       id: 2,
-      name: 'Microsoft'
+      name: 'Wolters Kluwer'
     },
-    position: 'Product Manager',
+    position: 'Data Scientist',
     is_mentor: true,
     is_available_for_referrals: false,
     skills: [
@@ -55,16 +55,16 @@ const mockAlumni = [
     id: 3,
     user: {
       id: 3,
-      first_name: 'Michael',
-      last_name: 'Lee',
+      first_name: 'Yashraj',
+      last_name: 'Aware',
       profile_image: getImageUrl('avatar', 'profile2')
     },
     graduation_year: 2021,
     current_company: {
       id: 3,
-      name: 'Amazon'
+      name: 'Cognida.ai'
     },
-    position: 'Data Scientist',
+    position: 'Backend Developer',
     is_mentor: false,
     is_available_for_referrals: true,
     skills: [
@@ -84,16 +84,16 @@ const mockMentors = [
       id: 1,
       user: {
         id: 1,
-        first_name: 'John',
-        last_name: 'Smith',
+        first_name: 'Amarjeet',
+        last_name: 'Kawathe',
         profile_image: getImageUrl('avatar', 'profile1')
       },
       graduation_year: 2020,
       current_company: {
         id: 1,
-        name: 'Google'
+        name: 'NeudayAi'
       },
-      position: 'Software Engineer'
+      position: 'CEO and Founder'
     },
     expertise_areas: [
       { id: 1, name: 'Web Development' },
@@ -111,16 +111,16 @@ const mockMentors = [
       id: 2,
       user: {
         id: 2,
-        first_name: 'Sarah',
-        last_name: 'Johnson',
+        first_name: 'Nayan',
+        last_name: 'Chandak',
         profile_image: getImageUrl('avatar', 'profile3')
       },
       graduation_year: 2019,
       current_company: {
         id: 2,
-        name: 'Microsoft'
+        name: 'Wolters Kluwer'
       },
-      position: 'Product Manager'
+      position: 'Data Scientist'
     },
     expertise_areas: [
       { id: 3, name: 'Product Management' },
@@ -138,18 +138,18 @@ const mockMentors = [
 const mockEvents = [
   {
     id: 1,
-    title: 'Tech Career Panel',
+    title: 'Data Science Symposium DSS,25',
     description: 'Join our alumni panel to learn about careers in tech.',
-    event_type: 'panel',
-    start_datetime: '2025-04-15T18:00:00Z',
-    end_datetime: '2025-04-15T20:00:00Z',
-    location: { id: 1, name: 'Online' },
-    is_virtual: true,
+    event_type: 'Project Exhibition',
+    start_datetime: '2025-04-16T18:00:00Z',
+    end_datetime: '2025-04-17T20:00:00Z',
+    location: { id: 1, name: 'VU Auditorium' },
+    is_virtual: false,
     virtual_meeting_url: 'https://zoom.us/j/1234567890',
     organizer: {
       id: 1,
-      first_name: 'Admin',
-      last_name: 'User',
+      first_name: 'Department of Artificial Intelligence and Data Science',
+      last_name: '',
       profile_image: getImageUrl('avatar', 'profile4')
     },
     is_past: false,
@@ -190,20 +190,20 @@ const mockMentorshipRelationships = [
         id: 2,
         user: {
           id: 2,
-          first_name: 'Sarah',
-          last_name: 'Johnson',
+          first_name: 'Nayan',
+          last_name: 'Chandak',
           profile_image: 'https://via.placeholder.com/150'
         },
-        position: 'Product Manager',
+        position: 'Data Scientist',
         current_company: {
-          name: 'Microsoft'
+          name: 'Wolters Kluwer'
         }
       }
     },
     mentee: {
       id: 5,
-      first_name: 'David',
-      last_name: 'Chen',
+      first_name: 'Yashraj',
+      last_name: 'Aware',
       profile_image: 'https://via.placeholder.com/150'
     },
     status: 'active',

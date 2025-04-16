@@ -11,7 +11,7 @@ export const imageReplacements = {
     "Facebook": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2048px-F_icon.svg.png",
     "Apple": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png",
     "Netflix": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1200px-Netflix_2015_logo.svg.png",
-    "TechCorp": "https://static.vecteezy.com/system/resources/previews/000/599/073/original/vector-tech-logo-template.jpg",
+    "TechCorp": "https://www.freepik.com/free-photo/html-css-collage-concept-with-person_36295457.htm#fromView=search&page=1&position=6&uuid=5084ea31-348f-4077-9e4e-0e5df8329d77&query=techcorp",
     "DataWorks": "https://st2.depositphotos.com/1768926/9399/v/450/depositphotos_93999448-stock-illustration-data-tech-logo-design.jpg",
     "WebSolutions": "https://img.freepik.com/premium-vector/web-technology-logo-design-vector-template_193274-339.jpg", 
     "DesignFirst": "https://img.freepik.com/premium-vector/abstract-colorful-gradient-logo-design-template_120229-420.jpg",

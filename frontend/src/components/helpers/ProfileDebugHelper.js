@@ -50,7 +50,7 @@ const ProfileDebugHelper = () => {
   };
   
   // This component should only be visible in development mode
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     return null;
   }
   
@@ -133,7 +133,7 @@ const ProfileDebugHelper = () => {
         </button>
       </div>
       
-      {debugMessage && (
+      {/* {debugMessage && (
         <div 
           style={{ 
             background: '#f8f8f8', 
@@ -147,7 +147,7 @@ const ProfileDebugHelper = () => {
         >
           {debugMessage}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
